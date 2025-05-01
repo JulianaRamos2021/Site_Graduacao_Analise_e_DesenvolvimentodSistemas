@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Divulga Serviços</title>
+    <style>
+        body {
+            font-family: Arial;
+            max-width: 700px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        input,
+        textarea,
+        button {
+            display: block;
+            width: 100%;
+            margin-top: 10px;
+            padding: 10px;
+        }
+
+        #lista-servicos div {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Cadastro de Prestadores de Serviço</h1>
+    <form id="formulario">
+        <input name="nome" placeholder="Nome completo" required />
+        <input name="servico" placeholder="Tipo de serviço (ex: encanador)" required />
+        <input name="telefone" placeholder="Telefone/WhatsApp" required />
+        <input name="cidade" placeholder="Cidade/Bairro" required />
+        <textarea name="descricao" placeholder="Descrição dos serviços" required></textarea>
+        <button type="submit">Cadastrar</button>
+    </form>
+
+    <h2>Serviços cadastrados:</h2>
+    <div id="lista-servicos"></div>
+
+    <script>
+        const form = document.getElementById("formulario");
+
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const data = {
+                nome: form.nome.value,
+                servico: form.servico.value,
+                telefone: form.telefone.value,
+                cidade: form.cidade.value,
+                descricao: form.descricao.value
+            };
+
+            await fetch("https://api.sheetbest.com/sheets/980dd929-d016-460b-9a49-0346f7b3d726", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data)
+            });
+
+            alert("Serviço cadastrado!");
+            form.reset();
+            window.location.reload();
+        });
+
+        fetch("https://api.sheetbest.com/sheets/980dd929-d016-460b-9a49-0346f7b3d726")
+            .then(res => res.json())
+            .then(data => {
+                const lista = document.getElementById("lista-servicos");
+                data.reverse().forEach(item => {
+                    lista.innerHTML += `
+            <div>
+              <strong>${item.nome}</strong> - ${item.servico}<br>
+              📞 ${item.telefone} - 📍 ${item.cidade}<br>
+              📝 ${item.descricao}
+            </div>`;
+                });
+            });
+    </script>
+</body>
+
+</html>
