@@ -5,44 +5,114 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Divulga Serviços</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
         body {
-            font-family: Arial;
-            max-width: 700px;
-            margin: auto;
+            background-color: #f4f6f8;
+            margin: 0;
             padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        h1,
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        form {
+            margin-top: 20px;
         }
 
         input,
         textarea,
         button {
-            display: block;
             width: 100%;
+            padding: 12px;
             margin-top: 10px;
-            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 16px;
         }
 
-        #lista-servicos div {
-            border: 1px solid #ccc;
-            padding: 10px;
-            margin-top: 10px;
+        button {
+            background-color: #1976d2;
+            color: #fff;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #1565c0;
+        }
+
+        #lista-servicos {
+            margin-top: 30px;
+        }
+
+        .card {
+            background-color: #e3f2fd;
+            border-left: 5px solid #1976d2;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+        }
+
+        .card strong {
+            font-size: 18px;
+            color: #0d47a1;
+        }
+
+        .card small {
+            color: #555;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+
+            input,
+            textarea,
+            button {
+                font-size: 14px;
+            }
         }
     </style>
 </head>
 
 <body>
-    <h1>Cadastro de Prestadores de Serviço</h1>
-    <form id="formulario">
-        <input name="nome" placeholder="Nome completo" required />
-        <input name="servico" placeholder="Tipo de serviço (ex: encanador)" required />
-        <input name="telefone" placeholder="Telefone/WhatsApp" required />
-        <input name="cidade" placeholder="Cidade/Bairro" required />
-        <textarea name="descricao" placeholder="Descrição dos serviços" required></textarea>
-        <button type="submit">Cadastrar</button>
-    </form>
+    <div class="container">
+        <h1>📢 Divulgue seu Serviço</h1>
+        <p style="text-align: center; color: #555;">Cadastre-se e ajude sua comunidade a te encontrar!</p>
 
-    <h2>Serviços cadastrados:</h2>
-    <div id="lista-servicos"></div>
+        <form id="formulario">
+            <input name="nome" placeholder="Seu nome completo" required />
+            <input name="servico" placeholder="O que você faz? (ex: eletricista, manicure...)" required />
+            <input name="telefone" placeholder="Telefone ou WhatsApp" required />
+            <input name="cidade" placeholder="Cidade/Bairro" required />
+            <textarea name="descricao" placeholder="Descreva seus serviços brevemente" required></textarea>
+            <button type="submit">📨 Cadastrar Serviço</button>
+        </form>
+
+        <h2>🔍 Serviços já cadastrados:</h2>
+        <div id="lista-servicos"></div>
+    </div>
 
     <script>
         const form = document.getElementById("formulario");
@@ -63,7 +133,7 @@
                 body: JSON.stringify(data)
             });
 
-            alert("Serviço cadastrado!");
+            alert("Serviço cadastrado com sucesso!");
             form.reset();
             window.location.reload();
         });
@@ -74,11 +144,13 @@
                 const lista = document.getElementById("lista-servicos");
                 data.reverse().forEach(item => {
                     lista.innerHTML += `
-            <div>
-              <strong>${item.nome}</strong> - ${item.servico}<br>
-              📞 ${item.telefone} - 📍 ${item.cidade}<br>
-              📝 ${item.descricao}
-            </div>`;
+            <div class="card">
+              <strong>${item.nome}</strong> – ${item.servico}<br/>
+              📍 <small>${item.cidade}</small><br/>
+              📞 ${item.telefone}<br/>
+              📝 <em>${item.descricao}</em>
+            </div>
+          `;
                 });
             });
     </script>
